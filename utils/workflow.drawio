@@ -1,0 +1,169 @@
+<mxfile host="Electron" modified="2026-06-30T03:45:00.000Z" agent="Gemini" version="21.6.6" type="device">
+  <diagram id="ai-detection-v3-inputs" name="Data-Focused AI Detection System Architecture">
+    <mxGraphModel dx="1400" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="1150" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        
+        <mxCell id="title" value="AI Poetry Detection Pipeline - Data Input &amp; Payload Specification Flowchart" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=18;fontStyle=1;fontColor=#1A2530;" vertex="1" parent="1">
+          <mxGeometry x="40" y="20" width="1020" height="40" as="geometry" />
+        </mxCell>
+
+        <mxCell id="ep_submit" value="POST /submit&#xa;(Payload Validation)" style="whiteSpace=wrap;html=1;rounded=1;arcSize=15;fillColor=#2E4057;fontColor=#FFFFFF;strokeColor=#1F2D3E;fontStyle=1;align=center;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="60" y="100" width="180" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="ratelimit" value="Flask-Limiter Guard" style="rhombus;whiteSpace=wrap;html=1;fillColor=#F8D7DA;strokeColor=#DC3545;fontColor=#721C24;fontSize=11;align=center;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="85" y="180" width="130" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="fork_node" value="Async Execution Pool&#xa;Unpacks Base Payload" style="rhombus;whiteSpace=wrap;html=1;fillColor=#E1F5FE;strokeColor=#03A9F4;fontColor=#01579B;fontSize=11;align=center;" vertex="1" parent="1">
+          <mxGeometry x="70" y="270" width="160" height="70" as="geometry" />
+        </mxCell>
+
+        <mxCell id="in_sig1" value="INPUT DATA PAYLOAD:&#xa;{&#xa;  text: # poem,&#xa;  content_id: # generated ID,&#xa;  creator_id: # user ID&#xa;}" style="whiteSpace=wrap;html=1;rounded=0;fillColor=#FFFDF0;fontColor=#594300;strokeColor=#D1C28A;fontSize=10;fontStyle=2;align=left;spacingLeft=8;" vertex="1" parent="1">
+          <mxGeometry x="10" y="375" width="220" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="sig1" value="Signal 1: LLM Engine&#xa;(llama-3.3-70b-versatile)&#xa;➔ Measures: Semantic clichés&#xa;OUT: {human_likely, AI_likely}" style="whiteSpace=wrap;html=1;rounded=0;fillColor=#FFFFFF;fontColor=#333333;strokeColor=#BDC3C7;fontSize=11;align=left;spacingLeft=10;" vertex="1" parent="1">
+          <mxGeometry x="10" y="450" width="220" height="65" as="geometry" />
+        </mxCell>
+
+        <mxCell id="in_sig2" value="INPUT DATA PAYLOAD:&#xa;{&#xa;  text: # poem,&#xa;  content_id: # generated ID,&#xa;  creator_id: # user ID&#xa;}" style="whiteSpace=wrap;html=1;rounded=0;fillColor=#FFFDF0;fontColor=#594300;strokeColor=#D1C28A;fontSize=10;fontStyle=2;align=left;spacingLeft=8;" vertex="1" parent="1">
+          <mxGeometry x="260" y="375" width="220" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="sig2" value="Signal 2: Stylometric Heuristics&#xa;(Custom Python Scripts)&#xa;➔ Measures: TTR, punctuation, lines&#xa;OUT: {human_likely, AI_likely}" style="whiteSpace=wrap;html=1;rounded=0;fillColor=#FFFFFF;fontColor=#333333;strokeColor=#BDC3C7;fontSize=11;align=left;spacingLeft=10;" vertex="1" parent="1">
+          <mxGeometry x="260" y="450" width="220" height="65" as="geometry" />
+        </mxCell>
+
+        <mxCell id="in_aggregator" value="INPUT: Scores Array&#xa;[ {signal:1, human_likely, AI_likely},&#xa;  {signal:2, human_likely, AI_likely} ]" style="whiteSpace=wrap;html=1;rounded=0;fillColor=#FFFDF0;fontColor=#594300;strokeColor=#D1C28A;fontSize=10;fontStyle=2;align=left;spacingLeft=8;" vertex="1" parent="1">
+          <mxGeometry x="130" y="550" width="230" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="aggregator" value="Confidence Matrix Aggregator&#xa;• Applies heavy human_likely weight&#xa;• Condenses &amp; normalizes values&#xa;OUT: {content_id, confidence, attribution:''}" style="whiteSpace=wrap;html=1;rounded=0;fillColor=#FFFFFF;fontColor=#333333;strokeColor=#BDC3C7;fontSize=11;align=left;spacingLeft=10;" vertex="1" parent="1">
+          <mxGeometry x="130" y="610" width="230" height="70" as="geometry" />
+        </mxCell>
+
+        <mxCell id="in_branch" value="INPUT: Normalized confidence score" style="whiteSpace=wrap;html=1;rounded=0;fillColor=#FFFDF0;fontColor=#594300;strokeColor=#D1C28A;fontSize=10;fontStyle=2;align=center;" vertex="1" parent="1">
+          <mxGeometry x="145" y="715" width="200" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="label_branch" value="Score Scale Mapping&#xa;(0.0 to 1.0)" style="rhombus;whiteSpace=wrap;html=1;fillColor=#FFF2CC;strokeColor=#D6B656;fontColor=#4C3E00;fontSize=11;align=center;" vertex="1" parent="1">
+          <mxGeometry x="170" y="755" width="150" height="80" as="geometry" />
+        </mxCell>
+
+        <mxCell id="lbl_human" value="transparency_label: likely_human&#xa;Range: [0.0 - 0.4)&#xa;OUTPUT STRING: &quot;It is highly likely that&#xa;this work was created by a human.&quot;" style="whiteSpace=wrap;html=1;rounded=1;fillColor=#E2F0D9;strokeColor=#70AD47;fontColor=#244211;fontSize=11;align=center;" vertex="1" parent="1">
+          <mxGeometry x="490" y="685" width="220" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="lbl_uncertain" value="transparency_label: uncertain&#xa;Range: [0.4 - 0.7]&#xa;OUTPUT STRING: &quot;Source of work&#xa;is uncertain.&quot;" style="whiteSpace=wrap;html=1;rounded=1;fillColor=#F4F4F6;fontColor=#333333;strokeColor=#BDC3C7;fontSize=11;align=center;" vertex="1" parent="1">
+          <mxGeometry x="490" y="765" width="220" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="lbl_ai" value="transparency_label: likely_ai&#xa;Range: (0.7 - 1.0]&#xa;OUTPUT STRING: &quot;It is highly likely that&#xa;this work was generated by AI.&quot;" style="whiteSpace=wrap;html=1;rounded=1;fillColor=#FCE4D6;strokeColor=#C65911;fontColor=#5E2605;fontSize=11;align=center;" vertex="1" parent="1">
+          <mxGeometry x="490" y="845" width="220" height="60" as="geometry" />
+        </mxCell>
+
+        <mxCell id="in_audit" value="INPUT STRUCTURE TO PERSIST" style="whiteSpace=wrap;html=1;rounded=0;fillColor=#FFFDF0;fontColor=#594300;strokeColor=#D1C28A;fontSize=10;fontStyle=1;align=center;" vertex="1" parent="1">
+          <mxGeometry x="780" y="735" width="240" height="25" as="geometry" />
+        </mxCell>
+        <mxCell id="audit_log" value="Audit Log Engine&#xa;Saves Database Record Format:&#xa;{&#xa;  timestamp: datetime, text: string,&#xa;  creator_id: ID, content_id: ID,&#xa;  confidence: float, attribution: label,&#xa;  appeals: []&#xa;}" style="whiteSpace=wrap;html=1;rounded=0;fillColor=#EDF2F7;fontColor=#2D3748;strokeColor=#CBD5E0;fontSize=10;align=left;spacingLeft=10;" vertex="1" parent="1">
+          <mxGeometry x="780" y="760" width="240" height="110" as="geometry" />
+        </mxCell>
+
+        <mxCell id="resp_block" value="API Client Response Payload&#xa;• Appends result_id &amp; attribution&#xa;• Offers Appeal workflow if 'likely_ai'" style="whiteSpace=wrap;html=1;rounded=0;fillColor=#FFFFFF;fontColor=#333333;strokeColor=#BDC3C7;fontSize=11;align=left;spacingLeft=10;" vertex="1" parent="1">
+          <mxGeometry x="780" y="900" width="240" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="ep_appeal" value="POST /appeal" style="whiteSpace=wrap;html=1;rounded=1;arcSize=15;fillColor=#2E4057;fontColor=#FFFFFF;strokeColor=#1F2D3E;fontStyle=1;align=center;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="780" y="985" width="240" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="in_appeal" value="INPUT SIGNATURE REQUIRED:&#xa;{&#xa;  content_id: string,&#xa;  creator_reasoning: string&#xa;}" style="whiteSpace=wrap;html=1;rounded=0;fillColor=#FFFDF0;fontColor=#594300;strokeColor=#D1C28A;fontSize=10;fontStyle=2;align=left;spacingLeft=8;" vertex="1" parent="1">
+          <mxGeometry x="780" y="1020" width="240" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="act_appeal_update" value="State Mutation Engine&#xa;• Checks if target status is 'likely_ai'&#xa;• MUTATES attribution ➔ 'under_review'" style="whiteSpace=wrap;html=1;rounded=0;fillColor=#FFFFFF;fontColor=#333333;strokeColor=#BDC3C7;fontSize=11;align=left;spacingLeft=10;" vertex="1" parent="1">
+          <mxGeometry x="490" y="1005" width="230" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="act_appeal_log" value="Append Event Data to Log appeals Array&#xa;➔ Reviewer View: Displays 'pending'&#xa;➔ Inspector View: Displays target poem text" style="whiteSpace=wrap;html=1;rounded=0;fillColor=#FFFFFF;fontColor=#333333;strokeColor=#BDC3C7;fontSize=11;align=left;spacingLeft=10;" vertex="1" parent="1">
+          <mxGeometry x="115" y="1005" width="255" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="ep_log" value="GET /log&#xa;(Returns last saved object)" style="whiteSpace=wrap;html=1;rounded=1;arcSize=15;fillColor=#4A5568;fontColor=#FFFFFF;strokeColor=#2D3748;fontStyle=1;align=center;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="540" y="100" width="170" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="ep_logs_count" value="GET /logs?count=&#xa;(Returns last N items array)" style="whiteSpace=wrap;html=1;rounded=1;arcSize=15;fillColor=#4A5568;fontColor=#FFFFFF;strokeColor=#2D3748;fontStyle=1;align=center;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="730" y="100" width="170" height="45" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e1" edge="1" parent="1" source="ep_submit" target="ratelimit" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#555555;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" value="Allowed" edge="1" parent="1" source="ratelimit" target="fork_node" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#555555;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="efork1" edge="1" parent="1" source="fork_node" target="in_sig1" style="edgeStyle=orthogonalEdgeStyle;rounded=1;exitX=0;exitY=0.5;entryX=0.5;entryY=0;strokeColor=#555555;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="esig1_connect" edge="1" parent="1" source="in_sig1" target="sig1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#555555;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="efork2" edge="1" parent="1" source="fork_node" target="in_sig2" style="edgeStyle=orthogonalEdgeStyle;rounded=1;exitX=1;exitY=0.5;entryX=0.5;entryY=0;strokeColor=#555555;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="esig2_connect" edge="1" parent="1" source="in_sig2" target="sig2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#555555;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ejoin1" edge="1" parent="1" source="sig1" target="in_aggregator" style="edgeStyle=orthogonalEdgeStyle;rounded=1;exitX=0.5;exitY=1;entryX=0;entryY=0.5;strokeColor=#555555;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ejoin2" edge="1" parent="1" source="sig2" target="in_aggregator" style="edgeStyle=orthogonalEdgeStyle;rounded=1;exitX=0.5;exitY=1;entryX=1;entryY=0.5;strokeColor=#555555;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="eagg_connect" edge="1" parent="1" source="in_aggregator" target="aggregator" style="edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#555555;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" edge="1" parent="1" source="aggregator" target="in_branch" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#555555;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="ebranch_connect" edge="1" parent="1" source="in_branch" target="label_branch" style="edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#555555;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e5" value="[0.0 - 0.4)" edge="1" parent="1" source="label_branch" target="lbl_human" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#555555;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e6" value="[0.4 - 0.7]" edge="1" parent="1" source="label_branch" target="lbl_uncertain" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#555555;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e7" value="(0.7 - 1.0]" edge="1" parent="1" source="label_branch" target="lbl_ai" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#555555;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e8" edge="1" parent="1" source="lbl_human" target="in_audit" style="edgeStyle=orthogonalEdgeStyle;rounded=1;exitX=1;exitY=0.5;entryX=0;entryY=0.25;strokeColor=#555555;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e9" edge="1" parent="1" source="lbl_uncertain" target="in_audit" style="edgeStyle=orthogonalEdgeStyle;rounded=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;strokeColor=#555555;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e10" edge="1" parent="1" source="lbl_ai" target="in_audit" style="edgeStyle=orthogonalEdgeStyle;rounded=1;exitX=1;exitY=0.5;entryX=0;entryY=0.75;strokeColor=#555555;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="eaudit_connect" edge="1" parent="1" source="in_audit" target="audit_log" style="edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#555555;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e11" edge="1" parent="1" source="audit_log" target="resp_block" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#555555;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e12" value="If attribution == 'likely_ai'" edge="1" parent="1" source="resp_block" target="ep_appeal" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#C65911;dashed=1;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="eappeal_connect" edge="1" parent="1" source="ep_appeal" target="in_appeal" style="edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#555555;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e13" edge="1" parent="1" source="in_appeal" target="act_appeal_update" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#555555;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e14" edge="1" parent="1" source="act_appeal_update" target="act_appeal_log" style="edgeStyle=orthogonalEdgeStyle;rounded=1;strokeColor=#555555;">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
