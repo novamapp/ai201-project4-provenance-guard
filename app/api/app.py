@@ -28,28 +28,11 @@ limiter = Limiter(
 executor = ThreadPoolExecutor(max_workers=4)
 LOG_FILE_PATH = os.path.join(os.path.dirname(__file__), "audit_log.json")
 
-# In-Memory Database (List) representing our operational audit log ecosystem
-# AUDIT_LOGS = []
-
 
 # ==========================================
 # SIGNAL WORKERS (Parallel Execution)
 # ==========================================
 
-# def run_signal_1_llm(text, content_id, creator_id):
-#     """
-#     Signal 1: LLM Engine (llama-3.3-70b-versatile)
-#     Measures: Semantic Clichés, rigid schemas, lack of intentional imperfections.
-#     """
-#     # TODO: Connect to Groq API client interface here.
-#     # Placeholder baseline logic returns object containing both likelihood weights.
-#     return {
-#         "signal": 1,
-#         "human_likely": 0.35,
-#         "AI_likely": 0.65
-#     }
-
-# TODO: uncomment
 def run_signal_1_llm(text, content_id, creator_id):
     """
     Signal 1: LLM Engine (llama-3.3-70b-versatile)
@@ -73,19 +56,6 @@ def run_signal_1_llm(text, content_id, creator_id):
             "human_likely": 0.5,
             "AI_likely": 0.5
         }
-
-
-# def run_signal_2_stylometrics(text, content_id, creator_id):
-#     """
-#     Signal 2: Stylometric Heuristics (Custom Python Scripts)
-#     Measures: Type-Token Ratio (TTR), punctuation density, line-length variance.
-#     """
-#     # TODO: Import and call your custom local analytical text processing functions.
-#     return {
-#         "signal": 2,
-#         "human_likely": 0.20,
-#         "AI_likely": 0.80
-#     }
 
 def run_signal_2_stylometrics(text, content_id, creator_id):
     """

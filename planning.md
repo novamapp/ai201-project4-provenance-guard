@@ -1,38 +1,34 @@
-# Provenance Guard - planning.md
 
-- explain what each signal captures and why you chose them
+# Provenance Guard - planning.md
 
 ## Specs
 
 ### Detection signals:
 
 __What are your 2+ signals?__
-- LLM (Groq | llama-3.3-70b-versatile)
-- Stylometric heuristics (Python)
+- An LLM engine leveraging Groq via the `llama-3.3-70b-versatile` model.
+- A custom suite of stylometric heuristics implemented natively in Python.
 
 __What does each one measure?__
-- LLM: semantic meaning matching AI
-- Stylometric heuristics: measure 
-    - Type-Token Ratio for vocabulary diversity, 
-    - punctuation density, 
-    - line-length variance
+- **LLM Engine:** Evaluates semantic configurations, structural rigidity, and thematic phrasing to identify patterns characteristic of machine-generated text.
+- **Stylometric Heuristics:** Quantifies textual features by analyzing the Type-Token Ratio (TTR) for vocabulary diversity, calculating punctuation density across the corpus, and determining line-length variance to assess formal uniformity.
 
 __What does each signal's output look like (a score between 0–1? a binary flag?)__
 - __and how will you combine them into a single confidence score?__
-- each signal will return an object with two properties:
-    - human_likely: a weight from 0 - 1 of how likely a human wrote it
-    - AI_likely: a weight from 0 - 1 of how likely AI wrote it
-- a higher percentage weight will be given to the human_likely value
-- the result of all signals will be normalized to a value between 0 - 1
+- Each diagnostic signal returns a structured object containing two key properties:
+    - `human_likely`: A floating-point probability weight ranging from 0.0 to 1.0 that denotes the likelihood of human authorship.
+    - `AI_likely`: A floating-point probability weight ranging from 0.0 to 1.0 that denotes the likelihood of synthetic generation.
+- To minimize false positives, the aggregation matrix applies a higher percentage weight to the human-likelihood metrics.
+- The composite outputs of all active signals are subsequently combined and normalized into a single, definitive confidence metric bounded between 0.0 and 1.0.
 
 
 ### Uncertainty representation: 
 
 __What does a confidence score of 0.6 mean to your system? How will you map raw signal outputs to a calibrated score? What threshold separates "likely AI" from "uncertain" from "likely human"?__
-- the ranges will be:
-    - [0.0 - 0.4) | High-Confidence Human => "likely_human"
-    - [0.4 - 0.7] | Uncertain Classification => "uncertain"
-    - (0.7 - 1.0] | High-Confidence AI => "likely_ai"
+- The calibrated score scale maps classification boundaries into the following explicit ranges:
+    - `[0.0 - 0.4)`: High-Confidence Human classification, designated as `"likely_human"`.
+    - `[0.4 - 0.7]`: Uncertain Classification bounds, designated as `"uncertain"`.
+    - `(0.7 - 1.0]`: High-Confidence AI classification, designated as `"likely_ai"`.
 
 
 ### Transparency label design:
@@ -49,52 +45,48 @@ __What exact text will the label show for (write out the three label variants no
 ### Appeals workflow:
 
 __Who can submit an appeal?__
-- (0.7 - 1.0] | High-Confidence AI => "likely AI"
-- The works that return a confidence score within the range above will be offered the change to appeal.
+- Users whose submissions return an internal confidence score falling within the high-confidence AI boundary of `(0.7 - 1.0]` (designated as `"likely AI"`) are automatically granted the option to initiate a verification appeal.
 
 __What information do they provide?__
-- they must provide a reason why their work may have been flagged as AI
+- Creators must submit a formal textual justification detailing the contextual or stylistic reasons why their original work may have triggered the synthetic detection system.
 
 __What does the system do when an appeal is received:__
 - __what status changes__
-    - the only status that is available to appeal is: "likely_ai", so this will change to "under_review"
+    - Because the appeal pathway is strictly restricted to records initially flagged as `"likely_ai"`, the system mutates the classification state machine flag directly to `"under_review"`.
 - __what gets logged?__
-    - work being audited
-    - confidence score
-    - signals used, 
-    - and any appeals
+    - The structural text payload undergoing the audit.
+    - The composite normalized confidence score.
+    - The collection of underlying diagnostic signals utilized.
+    - An append-only timeline array documenting all historical appeal events.
 - __What would a human reviewer see when they open the appeal queue?__
-    - they will see the message that their appeal is pending
-    - they will see the work that is currently under investigation
+    - The reviewer dashboard displays a timeline indicating that the user's dispute is actively pending evaluation, alongside a dedicated inspector interface displaying the precise poem text currently under investigation.
 
 
 ### Anticipated edge cases:
 
 __What types of content will your system handle poorly? (name at least two specific scenarios)__
-- short poems
-- really well prompted generated content, prompted to be as chaotic and human as possible
+- Short-form poetry due to the limited statistical sample size available for meaningful stylometric extraction.
+- Synthetic content generated via highly optimized prompts specifically engineered to introduce structural chaos, irregular meter, or mimic human imperfections.
 
 
 ## Signals
-- LLM
-    - good at:
-        - finding cliches
-        - can catch abstract statistical markers and phrasing choices
-        - can catch perfectly rigid rhyme scheme or meter without the slight, intentional imperfections or slant rhymes a human poet might use to create tension
-    - bad at:
-        - catching poems deliberately prompted to be chaotic / go against systematic output of AI
-        - identifying AI in short poems
-        - AI output with human augmentation / updated by a human
-- Stylometric Heuristics (Python Scripts)
-    - good at:
-        - catching the limited vocabulary of AI
-        - catching perfectly predictable rhyme patterns
-        - catching the punctuation and capitalization quirks of AI poetry:
-            - adhereing to standard capitalization rules at the start of lines
-            - using predictable punctuation
-    - bad at:
-        - catching semantic meaning and context
-        - catching deliberate mimicry programmed into an LLM prompt
+- **LLM Engine**
+    - **Strengths:**
+        - Optimally identifies semantic clichés, recurring thematic tropes, and formulaic narrative structures.
+        - Capably extracts abstract statistical linguistic markers and nuanced phrasing choices.
+        - Efficiently flags perfectly rigid rhyme schemes or metrical meters that lack the natural variations, slant rhymes, or structural tension characteristic of human poets.
+    - **Limitations:**
+        - Demonstrates reduced accuracy when processing content intentionally prompted to subvert standard large language model output behaviors.
+        - Exhibits lower confidence metrics when evaluating short-form or minimalist poetry.
+        - Struggles to identify synthetic origin if the generated output has undergone post-generation editing or manual human augmentation.
+- **Stylometric Heuristics (Python Scripts)**
+    - **Strengths:**
+        - Programmatically detects the restricted vocabulary variety and repetitive lexical choices typical of base AI models.
+        - Identifies mathematically uniform and highly predictable rhyme or rhythmic intervals.
+        - Isolates structural and typographic conventions common to synthetic poetry, such as strict adherence to standardized sentence-level capitalization at line boundaries and uniform punctuation arrays.
+    - **Limitations:**
+        - Incapable of evaluating underlying semantic context, emotional nuance, or abstract metaphors.
+        - Susceptible to evasion by sophisticated models explicitly instructed to mimic specific human stylometric variance patterns.
 
 ## Architecture Narrative
 
@@ -210,48 +202,39 @@ Link to Drawio Flowchart: [here](utils/workflow.drawio)
 
 
 ## AI Usage
-- reference tool to learn more about default signals benefits and limitations
-- help brainstorming signals
-- help templating the architecture diagram / generating flowchart
+- Referenced as a technical tool to evaluate the systemic benefits and algorithmic limitations of default classification signals.
+- Utilized for conceptual brainstorming regarding stylometric and LLM evaluation criteria.
+- Used to format the ASCII architecture visualization and structure the project workflow layout.
 
 ### M3 (submission endpoint + first signal): 
 __Which spec sections you'll provide to the AI tool__
-- your detection signals section 
-- the diagram),
+- The detection signals criteria and the system architecture flowchart.
 
 __what you'll ask it to generate__
-- Flask app skeleton
-- the first signal function
-- second signal function
+- A modular Flask application skeleton integrated with concurrent worker functions for the first and second processing signals.
 
 __how you'll verify the output__
-- pytest for Mocked LLM to test output => success, output => error
+- Executing a `pytest` suite utilizing a mocked LLM interface to assert successful object data extractions and graceful exception-handling boundaries.
+
 
 ### M4 (second signal + confidence scoring): 
 __Which spec sections you'll provide__
-- detection signals
-- uncertainty representation
-- diagram
+- The signal parameters, uncertainty representation scales, and systemic architecture routing designs.
 
 __what you'll ask for__
-- second signal function
-- scoring logic
+- The functional implementation of the second stylometric heuristic module and its corresponding confidence matrix mathematical aggregator.
 
 __what you'll check__
-- do scores vary meaningfully between clearly AI and clearly human text?
-- pytest for signal two
+- Verify whether the normalized output scores vary significantly and accurately when exposed to clearly synthetic text versus organic human text, validated via targeted unit tests.
+
 
 ### M5 (production layer): 
 
 __Which spec sections you'll provide__
-- label variants
-- appeals workflow
--  diagram
+- Transparency label variants, appeals workflow state transitions, and the system routing schematic.
 
 __what you'll ask for__
-- label generation logic
-- the /appeal endpoint
+- The conditional execution logic governing label distribution alongside the core operational state mutations for the `/appeal` endpoint.
 
 __how you'll verify__
-- test all three label variants are reachable and that an appeal updates status correctly
-- pytest for outputs
+- Confirm that all three transparency label variants remain accessible under specific test conditions and verify that submitting a dispute accurately mutates the underlying audit log file payload.
