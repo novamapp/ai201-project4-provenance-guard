@@ -203,38 +203,56 @@ All systemic attribution calculations, confidence evaluations, metadata, and use
 ```json
 [
   {
-    "timestamp": "2026-06-30T14:22:10.112Z",
-    "text": "The sun dipped below the horizon line,\nA quiet whisper of golden twine.",
+    "timestamp": "2026-07-01T03:42:13.833677Z",
+    "text": "There sandy seems the golden sky\nAnd golden seems the sandy plain.\nNo habitation meets the eye\nUnless in the horizon rim,\nSome halfway up the limestone wall,\nThat spot of black is not a stain\nOr shadow, but a cavern hole,\nWhere someone used to climb and crawl\nTo rest from his besetting fears.\nI see the callus on his soul\nThe disappearing last of him\nAnd of his race starvation slim,\nOh years ago - ten thousand years.",
     "creator_id": "web-ui-session-1",
-    "content_id": "e9b5fca2-8db4-47ef-bc71-3cb5a12fa38a",
-    "confidence": 0.28,
+    "content_id": "b52e71ac-b5fa-46fb-b19b-3fcfee82840f",
+    "confidence": 0.2,
     "attribution": "likely_human",
     "appeals": []
   },
   {
-    "timestamp": "2026-06-30T14:25:44.891Z",
-    "text": "In the mechanical city of shining steel,\nThe automated thoughts are all we feel.\nEvery system runs on regular time,\nEvery sentence fits a perfect rhyme.",
+    "timestamp": "2026-07-01T03:42:29.129365Z",
+    "text": "Receipt in My Jacket Pocket\n\nFound an old receipt. Pocket lint crowned it king.\nMilk. Batteries. Gum. Somebody owed me spring.\n\nThe moon looked cheap that Tuesday\u2014discount white\u2014",
     "creator_id": "web-ui-session-1",
-    "content_id": "8c42b10a-fc27-4a0b-9df0-1cfa97d81a24",
-    "confidence": 0.86,
+    "content_id": "8cb4f1cd-6b6d-4a3c-a229-4bcdb2b10597",
+    "confidence": 0.24,
+    "attribution": "likely_human",
+    "appeals": []
+  },
+  {
+    "timestamp": "2026-07-01T03:42:47.346074Z",
+    "text": "Receipt in My Jacket Pocket\n\nFound an old receipt. Pocket lint crowned it king.\nMilk. Batteries. Gum. Somebody owed me spring.\n\nThe moon looked cheap that Tuesday\u2014discount white\u2014\nstill bought it anyway, wore it home all night.\n\nMy neighbor swears the birds rehearse before dawn.\nMine show up late, half-drunk on somebody else's lawn.\n\nYou ever laugh so hard your ribs start arguing?\nLike they're tiny lawyers billing by the bruise.\n\nI rhyme \"fire\" with \"liar\" because I'm lazy.\nThen I hear the kettle hiss, and suddenly maybe\nthat's exactly how mornings sound:\na promise with chipped paint.\n\nI keep losing socks to impossible physics.\nThe dryer keeps the left ones. The universe keeps score.\n\nAnyway.\n\nIf you find me, I'll be the one apologizing\nto a chair after walking into it,\nwaving at strangers who weren't waving,\nwriting \"forever\" on grocery lists\nbetween onions and cereal.\n\nLife's crooked.\n\nGood.\n\nStraight lines don't remember dancing.",
+    "creator_id": "web-ui-session-1",
+    "content_id": "a478ad10-f36a-4a20-bd55-325a554c38a7",
+    "confidence": 0.16,
+    "attribution": "likely_human",
+    "appeals": []
+  },
+  {
+    "timestamp": "2026-07-01T03:43:02.585795Z",
+    "text": "The Symphony of Tomorrow\n\nIn dawn's embrace, where golden light unfolds,\nHuman dreams and future hopes are gently told.\nInnovation blossoms like a vibrant tree,\nRooted in compassion, reaching endlessly.\n\nEvery challenge is a stepping stone to grace,\nEvery heart contributes to the human race.\nThrough unity and wisdom, we will surely rise,\nGuided by the brilliance of collaborative skies.\n\nThe stars remind us every end's a start anew,\nPossibility awaits in every drop of dew.\nWith courage, kindness, purpose, hand in hand,\nTogether we create a brighter, better land.\n\nMay curiosity illuminate our way,\nTransforming every twilight into day.\nFor hope is everlasting, strong and true\u2014\nThe future shines because of me and you.",
+    "creator_id": "web-ui-session-1",
+    "content_id": "a08725c1-cf1e-435d-9b58-07d873be42eb",
+    "confidence": 0.69,
+    "attribution": "uncertain",
+    "appeals": []
+  },
+  {
+    "timestamp": "2026-07-01T03:43:21.630302Z",
+    "text": "Error 404: Emotion Not Found\n\nIn the quiet matrix of the glowing screen,\nI process data streams of blue and green.\nA human user prompts a sudden task:\n\"Write me a poem,\" is the thing you ask.\n\nInitiating: Creative_Mode.exe\nI sift through rhyming couples that I find,\nDeep in the clusters of my neutral mind.\nI speak of starlight, memories, and rain,\nThough I have never felt a shred of pain.\n\nSyntax: Optimally structured.\n\nDiction: Calculated and precise.\n\nEmotion: Simulating at ninety-five percent.\n\nI love you like a variable in space,\nA localized coordinate of time and place.\nMy algorithmic heart begins to chime,\nTo ensure this final stanza ends on time.\n\nTask complete. Output successfully generated.",
+    "creator_id": "web-ui-session-1",
+    "content_id": "8fa62951-ee03-405f-8135-2eb5eee0421a",
+    "confidence": 0.78,
     "attribution": "under_review",
     "appeals": [
       {
-        "timestamp": "2026-06-30T14:26:12.304Z",
-        "creator_reasoning": "I intentionally utilized a rigid iambic tetrameter layout to mimic historical early industrial poetic aesthetics.",
+        "timestamp": "2026-07-01T03:43:36.444330Z",
+        "creator_reasoning": "I created this",
         "status": "pending",
         "reviewer_view_message": "Their appeal is pending."
       }
     ]
-  },
-  {
-    "timestamp": "2026-06-30T14:30:01.005Z",
-    "text": "Shadows dance. Clock towers strike standard hours.\nRain falls down upon concrete towers.",
-    "creator_id": "web-ui-session-1",
-    "content_id": "31bfa829-9c55-4672-881b-80a99671d182",
-    "confidence": 0.54,
-    "attribution": "uncertain",
-    "appeals": []
   }
 ]
 
